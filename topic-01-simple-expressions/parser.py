@@ -6,7 +6,7 @@ from pprint import pprint
 # EBNF
 
 #   expression = term { ("+" | "-") term }
-#   term = factor { ("*" | "/") factor }
+#   term = factor { ("*" | "/" | "%") factor } added modulus expression to this comment. this doesn't do anything
 #   factor = <number> | "(" expression ")"
 
 
@@ -41,7 +41,7 @@ def test_parse_factor():
 def parse_term(tokens):
     """term = factor { ("*" | "/") factor }"""
     left, tokens = parse_factor(tokens)
-    while tokens[0]["tag"] in ["*", "/"]:
+    while tokens[0]["tag"] in ["*", "/", "%"]: # modulus support added 
         op = tokens[0]["tag"]
         right, tokens = parse_factor(tokens[1:])
         left = {"tag": op, "left": left, "right": right}
