@@ -85,6 +85,16 @@ def test_parse_term():
     assert tokens == [{"column": 6, "line": 1, "tag": None}]
 
 
+def test_parse_term_modulus():
+    print("test parse_term_modulus()")
+    tokens = tokenize("3%4")
+    ast, tokens = parse_term(tokens)
+    assert ast == {
+        "left": {"tag": "number", "value": 3},
+        "right": {"tag": "number", "value": 4},
+        "tag": "%",
+    }
+
 def parse_expression(tokens):
     """expression = term { ("+" | "-") term }"""
     left, tokens = parse_term(tokens)
@@ -128,5 +138,6 @@ def parse(tokens):
 if __name__ == "__main__":
     test_parse_factor()
     test_parse_term()
+    test_parse_term_modulus()
     test_parse_expression()
     print("done.")
