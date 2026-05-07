@@ -8,14 +8,19 @@ from parser import parse
 
 from evaluator import evaluate
 
+import global_variables
+
 def main():
+    global_variables.init() # I hate this stupid programming language so much...
     environment = {}
-    
+
     # Check for command line arguments
     if len(sys.argv) > 1:
         # Filename provided, read and execute it
         with open(sys.argv[1], 'r') as f:
             source_code = f.read()
+        if len(sys.argv) > 2:
+            global_variables.output_file = open(sys.argv[2], 'w') 
         try:
             tokens = tokenize(source_code)
             ast = parse(tokens)

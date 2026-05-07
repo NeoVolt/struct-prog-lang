@@ -3,7 +3,7 @@ from parser import parse
 from pprint import pprint
 import copy
 import errors
-
+import global_variables
 
 def type_of(*args):
     def single_type(x):
@@ -210,6 +210,8 @@ def evaluate_builtin_function(function_name, args):
 
 
 def evaluate(ast, environment):
+    global output_file
+
     if ast["tag"] == "number":
         assert type(ast["value"]) in [
             float,
@@ -429,10 +431,16 @@ def evaluate(ast, environment):
                     value = "true"
                 if value == False:
                     value = "false"
-            print(str(value))
+            if global_variables.output_file != False: 
+                global_variables.output_file.write(str(value) + "\n")
+            else:
+                print(str(value))
             return str(value) + "\n", None  # Return the printed value with newline
         else:
-            print()
+            if global_variables.output_file != False:
+                global_variables.output_file.write("\n")
+            else: 
+                print()
         return "\n", None  # Print with no args returns a newline string
 
     if ast["tag"] == "assert":
